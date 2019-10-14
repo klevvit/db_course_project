@@ -55,7 +55,6 @@ select room_id, enter_dttm
 
 -- Вывести статус доступа студента 'Коваленко Лев' в помещение 'Клуб': ALWAYS (доступ есть в любое время) /
 -- NORMAL (обычный студент, доступ открыт по записи) / BANNED (доступ запрещён)
-
 with user_id as (
     select student_id
         from student
