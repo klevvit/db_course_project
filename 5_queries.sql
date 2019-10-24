@@ -59,22 +59,28 @@ with user_id as (
     select student_id
         from student
         where student_nm like 'Коваленко Лев%'
-), manager_id as (
+), is_manager_id as (
     select distinct manager.student_id
         from user_id
         inner join manager
             on user_id.student_id = manager.student_id
         inner join access_manager_x_room_of_sc access
-            on manager.occupation_nm = access.occupation_nm and room_id = 'kds2'
+            on manager.occupation_nm = access.occupation_nm and room_id = 'club'
+),is_responsible_id as (
+    select distinct user_id.student_id
+        from user_id
+        inner join responsible_zone
+            on student_id = responsible_student_id
+        where zone_nm = (select zone_nm from room_of_student_council where room_id = 'club')
 ), actual_ban_list as (
     select *
         from ban_list
-    where ends_dttm > current_timestamp and room_id = 'kds2'
+    where ends_dttm > current_timestamp and room_id = 'club'
 )
 select case
     when NOT exists(select * from (select count(student_id) as c from user_id) as t where t.c = 1)
-    then 'SEARCH ERROR'
-    when exists(select * from manager_id)
+    then 'SEARCH ERROR'  -- found not 1 student
+    when exists(select * from is_manager_id) or exists(select * from is_responsible_id)
     then 'ALWAYS'
     when exists(select * from user_id inner join actual_ban_list on user_id.student_id = actual_ban_list.student_id)
     then 'BANNED'
