@@ -1,8 +1,8 @@
 
 -- 'student' table
-insert into student values(19, 'Халяпов Александр Фаритович', NULL, '396а', 79160572056);
+insert into student values(19, 'Халяпов Александр Фаритович', NULL, '396а', 79054321098);
 select * from student;
-update student set student_tel = 79005555505 where student_id = 19;
+update student set student_tel = 79005553535 where student_id = 19;
 delete from student where student_id = 19;
 
 -- 'ban_list' table
